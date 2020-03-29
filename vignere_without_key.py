@@ -1,13 +1,14 @@
 import re
-import operator
 from collections import Counter
+letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msg = "PPQCAXQVEKGYBNKMAZUYBNGBALJONITSZMJYIMVRAGVOHTVRAUCTKSGDDWUOXITLAZUVAVVRAZCVKBQPIWPOU"
+from vignere import decrypt
 
 msg = msg.upper().strip().replace(" ","")   # to convert the cipher text into capital letters and remove all spaces
 msg = re.sub(r'\W', '', msg)  #to remove all non alpha numeric characters
 print(msg)
 
-def findRepeatedSequences():
+def findrepeatedsequences():
     seqspace= []
     dictOfElems = dict()
     for seqlen in range(3,6):                  #loop through the different lenghts of the key
@@ -58,12 +59,12 @@ def seq_distance(space_list):
     print(nondup_list)
     nonzero_list = list(filter(lambda a:a !=0,nondup_list))
     print(nonzero_list)
-    factors = findFactors(nonzero_list)
+    factors = findfactors(nonzero_list)
     print(factors)
-    findProbableKeyLength(factors)
+    findprobablekeylength(factors)
 
 
-def findProbableKeyLength(factors):
+def findprobablekeylength(factors):
     dictofFactors = dict()
     dictofFactors=dict(Counter(factors))
     print(dictofFactors)
@@ -72,9 +73,33 @@ def findProbableKeyLength(factors):
 
     probable_key_lengths = dictofFactors.keys()
     print(probable_key_lengths)
+    getnlettersfromstring(probable_key_lengths)
 
 
-def findFactors(input_list):
+#to break down the cipher such that we have a set of characters which are all encoded with the same key index
+def getnlettersfromstring(probable_key_lengths):
+    str_list = []
+    for elem in probable_key_lengths:
+
+        print(elem)
+        for start in range(0,4):       #can replace 4 with elem to loop through all the possible key lengths
+            sub_str = ''
+            for seq in range(start,len(msg),4):         #can replace 4 with elem to loop through all the possible key lengths
+                sub_str=sub_str + msg[seq]
+            str_list.append(sub_str)
+            str_list = list(set(str_list))
+    print(str_list)
+    frequency_analysis(str_list)
+
+def frequency_analysis(str_list):
+    #print(str_list[0])
+    #for i in range(0,len(str_list)):
+        for k in range(0,len(letters)):
+            cipher=decrypt(letters[k],str_list[0])
+            print(cipher)
+
+
+def findfactors(input_list):
     factors = []
     for position in range(0,len(input_list)):
         for i in range(2,input_list[position]+1):
@@ -82,8 +107,11 @@ def findFactors(input_list):
                 factors.append(i)
     return(factors)
 
+def frequencymatch(str):
+    print("Phew")
 
 
 
 
-findRepeatedSequences()
+
+findrepeatedsequences()
