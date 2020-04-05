@@ -4,6 +4,10 @@ letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 msg = "PPQCAXQVEKGYBNKMAZUYBNGBALJONITSZMJYIMVRAGVOHTVRAUCTKSGDDWUOXITLAZUVAVVRAZCVKBQPIWPOU"
 from vignere import decrypt
 
+
+
+englishLetterFreq = {'A': 8.17, 'B': 1.29, 'C': 2.78,'D': 4.25,'E': 12.70, 'F': 2.23,'G': 2.02,'H': 6.09,'I': 6.97, 'J': 0.15,'K': 0.77, 'L': 4.03, 'M': 2.41,'N': 6.75, 'O': 7.51,'P': 1.93,'Q': 0.10,'R': 5.99,'S': 6.33,'T': 9.06,'U': 2.76, 'V': 0.98, 'W': 2.36, 'X': 0.15,    'Y': 1.97,    'Z': 0.07}
+ETAOIN = 'ETAOINSHRDLCUMWFGYPBVKJXQZ'
 msg = msg.upper().strip().replace(" ","")   # to convert the cipher text into capital letters and remove all spaces
 msg = re.sub(r'\W', '', msg)  #to remove all non alpha numeric characters
 print(msg)
@@ -89,14 +93,41 @@ def getnlettersfromstring(probable_key_lengths):
             str_list.append(sub_str)
             str_list = list(set(str_list))
     print(str_list)
-    frequency_analysis(str_list)
+    frequency_analysis("PAEBABANZIAHAKDXAAAKIU")
 
 def frequency_analysis(str_list):
-    #print(str_list[0])
-    #for i in range(0,len(str_list)):
-        for k in range(0,len(letters)):
-            cipher=decrypt(letters[k],str_list[0])
-            print(cipher)
+
+    freq_list = {}
+    distro_list = {}
+    length_of_str = len(str_list)
+    print(length_of_str)
+    for char in str_list:
+        if char in freq_list:
+            freq_list[char] +=1
+        else:
+            freq_list[char] = 1
+    print(freq_list)
+
+    for char in letters:
+        if char not in freq_list:
+            freq_list[char] = 0
+    print(freq_list)
+
+
+    for elem in freq_list:
+        distro_list[elem] = freq_list[elem]/length_of_str
+    print(distro_list)
+
+    for dict_value in distro_list:
+        distro_list[dict_value] = round(distro_list[dict_value],3)
+
+    print(distro_list)
+
+    sortedDict = sorted(distro_list.items())
+    findKey(sortedDict)
+
+def findKey(sortedDict):
+    print(sortedDict)
 
 
 def findfactors(input_list):
@@ -106,12 +137,6 @@ def findfactors(input_list):
             if (input_list[position] % i == 0):
                 factors.append(i)
     return(factors)
-
-def frequencymatch(str):
-    print("Phew")
-
-
-
 
 
 findrepeatedsequences()
